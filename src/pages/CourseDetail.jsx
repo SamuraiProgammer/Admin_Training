@@ -395,8 +395,10 @@ const fetchCourseDetail = async () => {
       >
         <option value="">Select Duration</option>
         <option value="30">30 Hours</option>
+        <option value="30-40">30-40 Hours</option>
         <option value="50">50 Hours</option>
         <option value="60">60 Hours</option>
+        <option value="80-90">80-90 Hours</option>
         <option value="90">90 Hours</option>
         <option value="120">120 Hours</option>
         <option value="150">150 Hours</option>

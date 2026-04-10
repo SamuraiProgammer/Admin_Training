@@ -190,7 +190,7 @@ export default function AddCourse() {
 
       {/* Hours Checkbox */}
       <div className="flex gap-4">
-        {[30, 50, 60, 90, 120, 150, 180, 240].map((h) => (
+        {[30, 50, 60, 80, 90, 120, 150, 180, 240].map((h) => (
           <label key={h} className="flex items-center gap-1">
             <input
               type="checkbox"
