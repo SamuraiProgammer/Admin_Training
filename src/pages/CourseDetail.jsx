@@ -37,7 +37,7 @@ const imageOptions = [
 
 export default function CourseDetail() {
   const { id } = useParams();
-  const location = useLocation()
+  const location = useLocation();
   const navigate = useNavigate();
   const isEdit = location.pathname.includes("edit");
 
@@ -59,7 +59,7 @@ export default function CourseDetail() {
     coursecardid: id,
   });
 
-//  const isEdit = Boolean(id)
+  //  const isEdit = Boolean(id)
 
   // temp states
   const [skillInput, setSkillInput] = useState("");
@@ -164,48 +164,47 @@ export default function CourseDetail() {
     setSubInput("");
   };
 
-//   useEffect(() => {
-//   if (id) {
-//     fetchCourseDetail();
-//   }
-// }, [id]);
+  //   useEffect(() => {
+  //   if (id) {
+  //     fetchCourseDetail();
+  //   }
+  // }, [id]);
 
   useEffect(() => {
-  if (isEdit) {
-    fetchCourseDetail();
-  }
-}, [id, isEdit]);
+    if (isEdit) {
+      fetchCourseDetail();
+    }
+  }, [id, isEdit]);
 
-const fetchCourseDetail = async () => {
-  try {
-    const res = await axios.get(
-      `${import.meta.env.VITE_API_URL}/course-detail/${id}`
-    );
+  const fetchCourseDetail = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/course-detail/${id}`,
+      );
 
-    const data = res.data.data;
+      const data = res.data.data;
 
-    setForm({
-      title: data.title || "",
-      subtitle: data.subtitle || "",
-      duration: data.duration || "",
-      period: data.period || "",
-      price: data.price || "",
-      category: data.category || "",
-      subcategory: data.subcategory || "",
-      mode: data.mode || [],
-      skills: data.skills || [],
-      learning: data.learning || [],
-      pedagogy: data.pedagogy || [],
-      outcome: data.outcome || [],
-      courseStructure: data.courseStructure || [],
-      isActive: data.isActive ?? true,
-      coursecardid: data.coursecardid?._id || id,
-    });
-
-  } catch (err) {
-    console.error(err);
-  }
-};
+      setForm({
+        title: data.title || "",
+        subtitle: data.subtitle || "",
+        duration: data.duration || "",
+        period: data.period || "",
+        price: data.price || "",
+        category: data.category || "",
+        subcategory: data.subcategory || "",
+        mode: data.mode || [],
+        skills: data.skills || [],
+        learning: data.learning || [],
+        pedagogy: data.pedagogy || [],
+        outcome: data.outcome || [],
+        courseStructure: data.courseStructure || [],
+        isActive: data.isActive ?? true,
+        coursecardid: data.coursecardid?._id || id,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -241,7 +240,6 @@ const fetchCourseDetail = async () => {
 
     setOutcomeInput({ title: "", description: "" });
   };
-
 
   const removeSkill = (index) => {
     setForm((prev) => ({
@@ -304,6 +302,13 @@ const fetchCourseDetail = async () => {
     setForm({ ...form, courseStructure: updated });
   };
 
+  const editSectionDescription = (index, value) => {
+    const updated = [...form.courseStructure];
+    updated[index].description = value;
+
+    setForm({ ...form, courseStructure: updated });
+  };
+
   const validateForm = () => {
     if (!form.title) return "Title is required";
     if (!form.subtitle) return "Subtitle is required";
@@ -324,33 +329,29 @@ const fetchCourseDetail = async () => {
   };
 
   const handleSubmit = async () => {
-  const error = validateForm();
-  if (error) return toast.error(error);
+    const error = validateForm();
+    if (error) return toast.error(error);
 
-  try {
-    if (isEdit) {
-      await axios.patch(
-        `${import.meta.env.VITE_API_URL}/admin/courses/${id}`,
-        form
-      );
+    try {
+      if (isEdit) {
+        await axios.patch(
+          `${import.meta.env.VITE_API_URL}/admin/courses/${id}`,
+          form,
+        );
 
-      toast.success("Detail updated");
-      navigate('/home')
-    } else {
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/admin/courses`,
-        form
-      );
+        toast.success("Detail updated");
+        navigate("/home");
+      } else {
+        await axios.post(`${import.meta.env.VITE_API_URL}/admin/courses`, form);
 
-      toast.success("Detail added");
-      navigate("/home")
+        toast.success("Detail added");
+        navigate("/home");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to save");
     }
-  } catch (err) {
-    console.error(err);
-    toast.error("Failed to save");
-  }
-};
-
+  };
 
   return (
     <div className="p-6 max-w-4xl mx-auto flex flex-col gap-4">
@@ -454,7 +455,10 @@ const fetchCourseDetail = async () => {
           placeholder="Add Skill"
           className="border p-2 rounded"
         />
-        <button onClick={addSkill} className="bg-[#FAAD14] px-3 py-2 font-bold rounded-md ml-2">
+        <button
+          onClick={addSkill}
+          className="bg-[#FAAD14] px-3 py-2 font-bold rounded-md ml-2"
+        >
           Add
         </button>
 
@@ -527,7 +531,7 @@ const fetchCourseDetail = async () => {
               onClick={() =>
                 setPedagogyInput({ ...pedagogyInput, image: img.url })
               }
-              className={`border p-2 rounded cursor-pointer flex items-center justify-center 
+              className={`border p-2 rounded cursor-pointer flex items-center justify-center
         ${
           pedagogyInput.image === img.url
             ? "border-[#FAAD14] ring-2 ring-[#FAAD14]"
@@ -557,15 +561,6 @@ const fetchCourseDetail = async () => {
         <button onClick={addPedagogy}>Add More</button>
 
         <div className="mt-3 flex flex-col gap-2">
-          {/* {form.pedagogy.map((p, i) => (
-            <div key={i} className="border rounded p-3 bg-gray-50">
-              <img src={p.image} alt="" className="w-10 h-10 mb-2" />
-
-              <div className="font-semibold">{p.title}</div>
-              <div className="text-sm text-gray-600">{p.description}</div>
-            </div>
-          ))} */}
-
           {form.pedagogy.map((p, i) => (
             <div key={i} className="border p-3 rounded flex flex-col gap-2">
               <img src={p.image} className="w-10 h-10" />
@@ -613,13 +608,6 @@ const fetchCourseDetail = async () => {
         <button onClick={addOutcome}>Add More</button>
 
         <div className="mt-3 flex flex-col gap-2">
-          {/* {form.outcome.map((o, i) => (
-            <div key={i} className="border rounded p-3 bg-gray-50">
-              <div className="font-semibold">{o.title}</div>
-              <div className="text-sm text-gray-600">{o.description}</div>
-            </div>
-          ))} */}
-
           {form.outcome.map((o, i) => (
             <div key={i} className="border p-3 rounded">
               <input
@@ -734,12 +722,35 @@ const fetchCourseDetail = async () => {
         <div className="mt-4 flex flex-col gap-4">
           {form.courseStructure.map((sec, si) => (
             <div key={si} className="border p-4 rounded">
-              <div className="flex justify-between">
-                <h3 className="font-bold">{sec.title}</h3>
+              {/* HEADER */}
+              <div className="flex justify-between items-start">
+                <input
+                  value={sec.title}
+                  onChange={(e) => {
+                    const updated = [...form.courseStructure];
+                    updated[si].title = e.target.value;
+                    setForm({ ...form, courseStructure: updated });
+                  }}
+                  className="font-bold text-lg border-b outline-none"
+                />
 
-                <button onClick={() => removeSection(si)}>❌</button>
+                <button
+                  onClick={() => removeSection(si)}
+                  className="text-red-500"
+                >
+                  ❌
+                </button>
               </div>
 
+              {/* 🔥 DESCRIPTION FIELD (NEW) */}
+              <textarea
+                value={sec.description || ""}
+                onChange={(e) => editSectionDescription(si, e.target.value)}
+                placeholder="Section Description"
+                className="border p-2 rounded w-full mt-2"
+              />
+
+              {/* HEADINGS */}
               {sec.structure.map((item, hi) => (
                 <div key={hi} className="bg-gray-100 p-2 mt-2 rounded">
                   <div className="flex justify-between">

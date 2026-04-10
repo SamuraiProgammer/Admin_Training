@@ -33,7 +33,8 @@ const initialForm = {
   originalPrice: 999,
   currency: "INR",
   buttonText: "Reserve My Spot",
-  supportText: "Slot confirmation and batch details will be shown immediately after payment.",
+  supportText:
+    "Slot confirmation and batch details will be shown immediately after payment.",
   confirmationTitle: "Your preview seat is confirmed",
   confirmationMessage:
     "Payment successful. Keep this confirmation safe and join the selected batch on time.",
@@ -50,11 +51,13 @@ const initialForm = {
   deliverables: [
     {
       title: "Live 2 hour session",
-      description: "A structured preview of the training experience with faculty guidance.",
+      description:
+        "A structured preview of the training experience with faculty guidance.",
     },
     {
       title: "Real session format",
-      description: "Attendees experience the format, teaching style, and expected learning environment.",
+      description:
+        "Attendees experience the format, teaching style, and expected learning environment.",
     },
   ],
   batches: [emptyBatch()],
@@ -99,10 +102,8 @@ const normalizeFetchedOffer = (offer) => ({
           isActive: batch.isActive ?? true,
         }))
       : [emptyBatch()],
-  highlights:
-    offer.highlights?.length > 0 ? offer.highlights : [""],
-  terms:
-    offer.terms?.length > 0 ? offer.terms : [""],
+  highlights: offer.highlights?.length > 0 ? offer.highlights : [""],
+  terms: offer.terms?.length > 0 ? offer.terms : [""],
 });
 
 const Section = ({ title, subtitle, children }) => (
@@ -155,8 +156,9 @@ export default function OfferEditor() {
   }, [id, isEdit]);
 
   const publicLink = useMemo(
-    () => `${import.meta.env.VITE_PUBLIC_APP_URL || "http://localhost:5173"}/offers/${form.slug}`,
-    [form.slug]
+    () =>
+      `${import.meta.env.VITE_PUBLIC_APP_URL || "http://localhost:5173"}/offers/${form.slug}`,
+    [form.slug],
   );
 
   const setValue = (field, value) => {
@@ -167,7 +169,7 @@ export default function OfferEditor() {
     setForm((prev) => ({
       ...prev,
       [field]: prev[field].map((item, itemIndex) =>
-        itemIndex === index ? value : item
+        itemIndex === index ? value : item,
       ),
     }));
   };
@@ -193,7 +195,7 @@ export default function OfferEditor() {
     setForm((prev) => ({
       ...prev,
       deliverables: prev.deliverables.map((item, itemIndex) =>
-        itemIndex === index ? { ...item, [key]: value } : item
+        itemIndex === index ? { ...item, [key]: value } : item,
       ),
     }));
   };
@@ -219,7 +221,7 @@ export default function OfferEditor() {
     setForm((prev) => ({
       ...prev,
       batches: prev.batches.map((batch, batchIndex) =>
-        batchIndex === index ? { ...batch, [key]: value } : batch
+        batchIndex === index ? { ...batch, [key]: value } : batch,
       ),
     }));
   };
@@ -278,7 +280,8 @@ export default function OfferEditor() {
 
     for (const batch of form.batches) {
       if (!batch.title.trim()) return "Har batch ka title required hai";
-      if (!batch.startAt || !batch.endAt) return "Har batch ka start/end time required hai";
+      if (!batch.startAt || !batch.endAt)
+        return "Har batch ka start/end time required hai";
     }
 
     return null;
@@ -333,8 +336,8 @@ export default function OfferEditor() {
             {isEdit ? "Edit Preview Offer" : "Create Preview Offer"}
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-gray-600">
-            Card copy, stepper content, deliverables, batch schedule, pricing aur payment
-            flow ke saare texts yahan se control honge.
+            Card copy, stepper content, deliverables, batch schedule, pricing
+            aur payment flow ke saare texts yahan se control honge.
           </p>
         </div>
 
@@ -342,7 +345,9 @@ export default function OfferEditor() {
           <div className="text-xs uppercase tracking-[0.2em] text-gray-500">
             Public Link
           </div>
-          <div className="mt-1 text-sm font-semibold text-gray-900">{publicLink}</div>
+          <div className="mt-1 text-sm font-semibold text-gray-900">
+            {publicLink}
+          </div>
         </div>
       </div>
 
@@ -507,7 +512,11 @@ export default function OfferEditor() {
                       className={inputClassName}
                       value={item}
                       onChange={(e) =>
-                        updateStringArrayItem("highlights", index, e.target.value)
+                        updateStringArrayItem(
+                          "highlights",
+                          index,
+                          e.target.value,
+                        )
                       }
                     />
                     <button
@@ -577,7 +586,9 @@ export default function OfferEditor() {
                     <input
                       className={inputClassName}
                       value={deliverable.title}
-                      onChange={(e) => updateDeliverable(index, "title", e.target.value)}
+                      onChange={(e) =>
+                        updateDeliverable(index, "title", e.target.value)
+                      }
                     />
                   </Field>
                   <Field label="Description">
@@ -613,7 +624,9 @@ export default function OfferEditor() {
               >
                 <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <h3 className="font-semibold text-gray-900">Batch {index + 1}</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      Batch {index + 1}
+                    </h3>
                     <p className="text-sm text-gray-500">
                       Seats and Timings will be control from this section.
                     </p>
@@ -631,14 +644,18 @@ export default function OfferEditor() {
                     <input
                       className={inputClassName}
                       value={batch.title}
-                      onChange={(e) => updateBatch(index, "title", e.target.value)}
+                      onChange={(e) =>
+                        updateBatch(index, "title", e.target.value)
+                      }
                     />
                   </Field>
                   <Field label="Mode">
                     <select
                       className={inputClassName}
                       value={batch.mode}
-                      onChange={(e) => updateBatch(index, "mode", e.target.value)}
+                      onChange={(e) =>
+                        updateBatch(index, "mode", e.target.value)
+                      }
                     >
                       <option value="online">online</option>
                       <option value="offline">offline</option>
@@ -650,7 +667,9 @@ export default function OfferEditor() {
                       type="datetime-local"
                       className={inputClassName}
                       value={batch.startAt}
-                      onChange={(e) => updateBatch(index, "startAt", e.target.value)}
+                      onChange={(e) =>
+                        updateBatch(index, "startAt", e.target.value)
+                      }
                     />
                   </Field>
                   <Field label="End">
@@ -658,14 +677,18 @@ export default function OfferEditor() {
                       type="datetime-local"
                       className={inputClassName}
                       value={batch.endAt}
-                      onChange={(e) => updateBatch(index, "endAt", e.target.value)}
+                      onChange={(e) =>
+                        updateBatch(index, "endAt", e.target.value)
+                      }
                     />
                   </Field>
                   <Field label="Timezone Label">
                     <input
                       className={inputClassName}
                       value={batch.timezoneLabel}
-                      onChange={(e) => updateBatch(index, "timezoneLabel", e.target.value)}
+                      onChange={(e) =>
+                        updateBatch(index, "timezoneLabel", e.target.value)
+                      }
                     />
                   </Field>
                   <Field label="Seats">
@@ -673,7 +696,9 @@ export default function OfferEditor() {
                       type="number"
                       className={inputClassName}
                       value={batch.seats}
-                      onChange={(e) => updateBatch(index, "seats", e.target.value)}
+                      onChange={(e) =>
+                        updateBatch(index, "seats", e.target.value)
+                      }
                     />
                   </Field>
                 </div>
@@ -683,14 +708,18 @@ export default function OfferEditor() {
                     <input
                       className={inputClassName}
                       value={batch.venue}
-                      onChange={(e) => updateBatch(index, "venue", e.target.value)}
+                      onChange={(e) =>
+                        updateBatch(index, "venue", e.target.value)
+                      }
                     />
                   </Field>
                   <label className="flex items-center gap-3 rounded-2xl border border-gray-200 px-4 py-3 text-sm font-medium text-gray-700">
                     <input
                       type="checkbox"
                       checked={Boolean(batch.isActive)}
-                      onChange={(e) => updateBatch(index, "isActive", e.target.checked)}
+                      onChange={(e) =>
+                        updateBatch(index, "isActive", e.target.checked)
+                      }
                     />
                     <span>Batch active</span>
                   </label>
@@ -701,7 +730,9 @@ export default function OfferEditor() {
                     rows={3}
                     className={inputClassName}
                     value={batch.description}
-                    onChange={(e) => updateBatch(index, "description", e.target.value)}
+                    onChange={(e) =>
+                      updateBatch(index, "description", e.target.value)
+                    }
                   />
                 </Field>
               </div>
@@ -741,7 +772,9 @@ export default function OfferEditor() {
                 rows={4}
                 className={inputClassName}
                 value={form.confirmationMessage}
-                onChange={(e) => setValue("confirmationMessage", e.target.value)}
+                onChange={(e) =>
+                  setValue("confirmationMessage", e.target.value)
+                }
               />
             </Field>
             <Field label="Support WhatsApp">
@@ -755,20 +788,20 @@ export default function OfferEditor() {
 
           <Section
             title="Quick Preview"
-            subtitle="Admin save karne se pehle major values yahin confirm kar sakta hai."
+            subtitle="The Admin can confirm the major values ​​right here before saving."
           >
-            <div className="rounded-3xl bg-[#111111] p-5 text-white">
-              <div className="text-xs uppercase tracking-[0.3em] text-white/60">
+            <div className="rounded-3xl bg-gradient-to-br from-[#e6fff0] via-[#d9fbe6] to-[#c8f7da] shadow-md p-5">
+              <div className="text-xs uppercase tracking-[0.3em] text-[#0f2f2f]">
                 {form.badge || "Offer"}
               </div>
               <h3 className="mt-3 text-2xl font-bold">{form.cardTitle || "Card title"}</h3>
-              <p className="mt-2 text-sm text-white/80">{form.cardDescription}</p>
+              <p className="mt-2 text-sm text-gray-700">{form.cardDescription}</p>
               <div className="mt-6 flex items-end justify-between">
                 <div>
-                  <div className="text-xs uppercase tracking-[0.2em] text-white/60">
+                  <div className="text-xs uppercase tracking-[0.2em]">
                     Current Price
                   </div>
-                  <div className="text-3xl font-bold">₹{form.price || 0}</div>
+                  <div className="text-3xl text-[#faad14] font-bold">₹{form.price || 0}</div>
                 </div>
                 <div className="rounded-full bg-[#FAAD14] px-4 py-2 text-xs font-bold text-black">
                   {form.buttonText}
@@ -780,13 +813,21 @@ export default function OfferEditor() {
               <div className="font-semibold text-gray-900">Active Batches</div>
               <div className="mt-3 space-y-3">
                 {form.batches.map((batch, index) => (
-                  <div key={batch._id || `preview-batch-${index}`} className="rounded-2xl bg-white p-4">
-                    <div className="font-semibold text-gray-900">{batch.title || `Batch ${index + 1}`}</div>
+                  <div
+                    key={batch._id || `preview-batch-${index}`}
+                    className="rounded-2xl bg-white p-4"
+                  >
+                    <div className="font-semibold text-gray-900">
+                      {batch.title || `Batch ${index + 1}`}
+                    </div>
                     <div className="mt-1 text-xs text-gray-500">
-                      {batch.startAt ? new Date(batch.startAt).toLocaleString("en-IN") : "Select start time"}
+                      {batch.startAt
+                        ? new Date(batch.startAt).toLocaleString("en-IN")
+                        : "Select start time"}
                     </div>
                     <div className="mt-2 text-xs text-gray-500">
-                      {batch.mode} | Seats: {batch.seats || 0} | {batch.isActive ? "Active" : "Inactive"}
+                      {batch.mode} | Seats: {batch.seats || 0} |{" "}
+                      {batch.isActive ? "Active" : "Inactive"}
                     </div>
                   </div>
                 ))}
