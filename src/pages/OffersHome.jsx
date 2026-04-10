@@ -54,8 +54,7 @@ export default function OffersHome() {
             Offers & Preview Sessions
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-gray-600">
-            Yahin se aap 2 Hour Preview jaisi live offers ka pura copy, batches,
-            pricing aur registrations manage kar sakte ho.
+            From here, you can manage the complete copy, batches, pricing, and registrations for live offers such as the '2-Hour Preview'.
           </p>
         </div>
 

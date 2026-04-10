@@ -9,12 +9,12 @@ const userSlice = createSlice({
     email: "",
   },
   reducers: {
-    userDetails(state, action) {
-      console.log(state);
-      console.log(action.payload);
-      
-      state.currentUser = action.payload; // Update only the currentUser field
-    },
+    userDetails: (state, action) => {
+  return {
+    ...state,
+    currentUser: action.payload,
+  };
+},
     logout(state) {
       console.log("logout called");
       

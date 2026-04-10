@@ -604,7 +604,7 @@ export default function OfferEditor() {
 
           <Section
             title="Batch Management"
-            subtitle="Step 2 ke छोटे selectable cards isi data se render honge."
+            subtitle="The small selectable cards in Step 2 will be rendered using this data."
           >
             {form.batches.map((batch, index) => (
               <div
@@ -615,7 +615,7 @@ export default function OfferEditor() {
                   <div>
                     <h3 className="font-semibold text-gray-900">Batch {index + 1}</h3>
                     <p className="text-sm text-gray-500">
-                      Seats aur timings yahin se control honge.
+                      Seats and Timings will be control from this section.
                     </p>
                   </div>
                   <button

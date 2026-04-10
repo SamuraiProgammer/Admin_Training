@@ -18,33 +18,32 @@ export default function AddCourse() {
     hours: [],
   });
 
- useEffect(() => {
-  if (id) {
-    fetchCourseCard();
-  }
-}, [id]);
+  useEffect(() => {
+    if (id) {
+      fetchCourseCard();
+    }
+  }, [id]);
 
-const fetchCourseCard = async () => {
-  try {
-    const res = await axios.get(
-      `${import.meta.env.VITE_API_URL}/course-detail/course-card/${id}`
-    );
+  const fetchCourseCard = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/course-detail/course-card/${id}`,
+      );
 
-    const data = res.data.data;
+      const data = res.data.data;
 
-    setForm({
-      badge: data.badge || "",
-      heading: data.heading || "",
-      subheading: data.subheading || "",
-      currentAcademicProgram: data.currentAcademicProgram || "",
-      description: data.description || "",
-      hours: data.hours || [],
-    });
-
-  } catch (err) {
-    console.error(err);
-  }
-};
+      setForm({
+        badge: data.badge || "",
+        heading: data.heading || "",
+        subheading: data.subheading || "",
+        currentAcademicProgram: data.currentAcademicProgram || "",
+        description: data.description || "",
+        hours: data.hours || [],
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -60,15 +59,15 @@ const fetchCourseCard = async () => {
   };
 
   const validateForm = () => {
-  if (!form.badge) return "Badge is required";
-  if (!form.heading) return "Heading is required";
-  if (!form.subheading) return "Subheading is required";
-  if (!form.currentAcademicProgram) return "Program is required";
-  if (!form.description) return "Description is required";
-  if (!form.hours.length) return "Select at least one hour";
+    if (!form.badge) return "Badge is required";
+    if (!form.heading) return "Heading is required";
+    if (!form.subheading) return "Subheading is required";
+    if (!form.currentAcademicProgram) return "Program is required";
+    if (!form.description) return "Description is required";
+    if (!form.hours.length) return "Select at least one hour";
 
-  return null;
-};
+    return null;
+  };
 
   // const handleSubmit = async () => {
   //   const error = validateForm();
@@ -95,7 +94,7 @@ const fetchCourseCard = async () => {
   //   }
   //    console.log("Card form ka data submit ke baad",form);
   //    toast.success("Saved Successfully");
-      
+
   // };
 
   const handleSubmit = async () => {
@@ -106,15 +105,15 @@ const fetchCourseCard = async () => {
     let savedId = id;
 
     if (isEdit) {
-      // 🔥 UPDATE
       await axios.patch(
         `${import.meta.env.VITE_API_URL}/admin/course-cards/${id}`,
         form
       );
 
       toast.success("Course updated");
+
+      navigate(`/course-detail/edit/${id}`); // 🔥 EDIT FLOW
     } else {
-      // 🔥 CREATE (already hai tera)
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/admin/course-cards`,
         form
@@ -123,9 +122,10 @@ const fetchCourseCard = async () => {
       savedId = res.data.data._id;
 
       toast.success("Course created");
+
+      navigate(`/course-detail/add/${savedId}`); // 🔥 ADD FLOW
     }
 
-    navigate(`/course-detail/${savedId}`);
   } catch (err) {
     console.error(err);
     toast.error("Something went wrong");
@@ -190,7 +190,7 @@ const fetchCourseCard = async () => {
 
       {/* Hours Checkbox */}
       <div className="flex gap-4">
-        {[60, 120, 180, 240].map((h) => (
+        {[30, 50, 60, 90, 120, 150, 180, 240].map((h) => (
           <label key={h} className="flex items-center gap-1">
             <input
               type="checkbox"

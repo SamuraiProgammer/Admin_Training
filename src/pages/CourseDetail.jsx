@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -37,8 +37,9 @@ const imageOptions = [
 
 export default function CourseDetail() {
   const { id } = useParams();
-  // let id = "69d77f151008bac4c1397355";
+  const location = useLocation()
   const navigate = useNavigate();
+  const isEdit = location.pathname.includes("edit");
 
   const [form, setForm] = useState({
     title: "",
@@ -58,7 +59,7 @@ export default function CourseDetail() {
     coursecardid: id,
   });
 
- const isEdit = Boolean(id)
+//  const isEdit = Boolean(id)
 
   // temp states
   const [skillInput, setSkillInput] = useState("");
@@ -163,11 +164,17 @@ export default function CourseDetail() {
     setSubInput("");
   };
 
+//   useEffect(() => {
+//   if (id) {
+//     fetchCourseDetail();
+//   }
+// }, [id]);
+
   useEffect(() => {
-  if (id) {
+  if (isEdit) {
     fetchCourseDetail();
   }
-}, [id]);
+}, [id, isEdit]);
 
 const fetchCourseDetail = async () => {
   try {
@@ -235,38 +242,6 @@ const fetchCourseDetail = async () => {
     setOutcomeInput({ title: "", description: "" });
   };
 
-  // 🔥 STRUCTURE ITEM ADD
-  const addStructureItem = () => {
-    if (!structureItem.heading) return;
-
-    setStructureSection((prev) => ({
-      ...prev,
-      structure: [
-        ...prev.structure,
-        {
-          heading: structureItem.heading,
-          subheading: structureItem.subheading
-            ? structureItem.subheading.split(",")
-            : [],
-          coursecardid: id,
-        },
-      ],
-    }));
-
-    setStructureItem({ heading: "", subheading: "" });
-  };
-
-  // 🔥 STRUCTURE SECTION ADD
-  const addStructureSection = () => {
-    if (!structureSection.title) return;
-
-    setForm((prev) => ({
-      ...prev,
-      courseStructure: [...prev.courseStructure, structureSection],
-    }));
-
-    setStructureSection({ title: "", description: "", structure: [] });
-  };
 
   const removeSkill = (index) => {
     setForm((prev) => ({
@@ -338,6 +313,7 @@ const fetchCourseDetail = async () => {
     if (form.price <= 0) return "Price must be greater than 0";
     if (!form.period) return "Period is required";
     if (!form.category) return "Category is required";
+    if (!form.subcategory) return "Subcategory is required";
     if (!form.skills.length) return "Add at least one skill";
     if (!form.learning.length) return "Add at least one learning";
     if (!form.pedagogy.length) return "Add at least one pedagogy";
@@ -346,23 +322,6 @@ const fetchCourseDetail = async () => {
 
     return null;
   };
-
-  // const handleSubmit = async () => {
-  //   const error = validateForm();
-
-  //   if (error) {
-  //     toast.error(error);
-  //     return;
-  //   }
-  //   if (isEdit) {
-  //     updateCourseDetail(id, form);
-  //   } else {
-  //     saveCourseDetail(form);
-  //     await axios.post(`${import.meta.env.VITE_API_URL}/admin/courses`, form);
-  //   }
-  //   console.log("Form ka data submit ke baad", form);
-  //   navigate("/home");
-  // };
 
   const handleSubmit = async () => {
   const error = validateForm();
@@ -391,6 +350,8 @@ const fetchCourseDetail = async () => {
     toast.error("Failed to save");
   }
 };
+
+
   return (
     <div className="p-6 max-w-4xl mx-auto flex flex-col gap-4">
       <h2 className="text-xl font-bold">Course Detail</h2>
@@ -433,8 +394,12 @@ const fetchCourseDetail = async () => {
         className="border p-2 rounded"
       >
         <option value="">Select Duration</option>
+        <option value="30">30 Hours</option>
+        <option value="50">50 Hours</option>
         <option value="60">60 Hours</option>
+        <option value="90">90 Hours</option>
         <option value="120">120 Hours</option>
+        <option value="150">150 Hours</option>
         <option value="180">180 Hours</option>
         <option value="240">240 Hours</option>
       </select>
@@ -469,23 +434,29 @@ const fetchCourseDetail = async () => {
         className="border p-2 rounded"
       />
 
+      {/* 🔥 SUBCATEGORY */}
+      <input
+        type="text"
+        name="subcategory"
+        value={form.subcategory}
+        placeholder="Subcategory"
+        onChange={handleChange}
+        className="border p-2 rounded"
+      />
+
       {/* 🔥 SKILLS */}
       <div>
         <input
           value={skillInput}
           onChange={(e) => setSkillInput(e.target.value)}
           placeholder="Add Skill"
+          className="border p-2 rounded"
         />
-        <button onClick={addSkill} className="bg-[#FAAD14] px-3 ml-2">
+        <button onClick={addSkill} className="bg-[#FAAD14] px-3 py-2 font-bold rounded-md ml-2">
           Add
         </button>
 
         <div className="flex gap-2 mt-2 flex-wrap">
-          {/* {form.skills.map((s, i) => (
-            <span key={i} className="bg-gray-200 px-2 py-1 rounded">
-              {s}
-            </span>
-          ))} */}
           {form.skills.map((s, i) => (
             <div key={i} className="flex gap-2 items-center">
               <input
@@ -759,20 +730,6 @@ const fetchCourseDetail = async () => {
 
         {/* SHOW ALL SECTIONS */}
         <div className="mt-4 flex flex-col gap-4">
-          {/* {form.courseStructure.map((sec, i) => (
-            <div key={i} className="border p-4 rounded shadow">
-              <div className="font-bold text-lg">{sec.title}</div>
-              <div className="text-gray-600 mb-2">{sec.description}</div>
-
-              {sec.structure.map((item, j) => (
-                <div key={j} className="bg-gray-100 p-2 rounded mb-2">
-                  <div className="font-medium">{item.heading}</div>
-                  <div className="text-sm">{item.subheading.join(", ")}</div>
-                </div>
-              ))}
-            </div>
-          ))} */}
-
           {form.courseStructure.map((sec, si) => (
             <div key={si} className="border p-4 rounded">
               <div className="flex justify-between">
