@@ -70,10 +70,7 @@ export default function OffersHome() {
 
       {!loading && offers.length === 0 && (
         <div className="rounded-3xl border border-dashed border-gray-300 bg-white p-10 text-center shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-900">Koi offer available nahi hai</h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Pehla preview offer create karke batches aur payment flow live kar do.
-          </p>
+          <h2 className="text-xl font-semibold text-gray-900">No Offer Available!!</h2>
         </div>
       )}
 

@@ -70,7 +70,7 @@ export default function StudentList() {
   };
 
   const handleDeletePreviewRegistration = async (id) => {
-    if (!window.confirm("Is preview registration ko delete karna hai?")) {
+    if (!window.confirm("Do You Want To Delete This Preview Registration!!")) {
       return;
     }
 
@@ -96,9 +96,6 @@ export default function StudentList() {
             Students & Registrations
           </p>
           <h1 className="text-3xl font-bold text-gray-900">All learners in one place</h1>
-          <p className="mt-2 max-w-3xl text-sm text-gray-600">
-            Regular form users alag, aur 2 hour preview wale paid/pending users alag dekh sakte ho.
-          </p>
         </div>
 
         <div className="grid grid-cols-3 gap-3">

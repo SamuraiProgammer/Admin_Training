@@ -300,16 +300,16 @@ export default function OfferEditor() {
 
       if (isEdit) {
         await axios.patch(`${apiUrl}/admin/offers/${id}`, payload);
-        toast.success("Offer update ho gaya");
+        toast.success("Offer Updated Successfully!!");
       } else {
         await axios.post(`${apiUrl}/admin/offers`, payload);
-        toast.success("Offer create ho gaya");
+        toast.success("Offer Created Successfully!!");
       }
 
       navigate("/offers");
     } catch (error) {
       console.error(error);
-      toast.error(error?.response?.data?.message || "Offer save nahi hua");
+      toast.error(error?.response?.data?.message || "Offer Not Saved!!");
     } finally {
       setSaving(false);
     }
@@ -335,10 +335,6 @@ export default function OfferEditor() {
           <h1 className="text-3xl font-bold text-gray-900">
             {isEdit ? "Edit Preview Offer" : "Create Preview Offer"}
           </h1>
-          <p className="mt-2 max-w-2xl text-sm text-gray-600">
-            Card copy, stepper content, deliverables, batch schedule, pricing
-            aur payment flow ke saare texts yahan se control honge.
-          </p>
         </div>
 
         <div className="rounded-2xl bg-white px-4 py-3 shadow-sm ring-1 ring-black/5">
